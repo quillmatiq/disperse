@@ -1,0 +1,22 @@
+{
+  "name": "disperse",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler pages dev ./dist"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.2",
+    "@astrojs/svelte": "^8.0.3",
+    "@atcute/bluesky": "^3.2.20",
+    "@atcute/client": "^4.2.1",
+    "@atcute/identity-resolver": "^1.2.2",
+    "@atcute/oauth-browser-client": "^3.0.0",
+    "astro": "^6.0.7",
+    "svelte": "^5.54.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.75.0"
+  }
+}

@@ -1,0 +1,37 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Disperse — signing in…">
+  <style slot="head">
+    p { color: var(--muted); margin-top: 0.5rem; font-size: 0.875rem; }
+    .error { color: var(--error); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+
+  <div class="card">
+    <div id="pending">
+      <strong>Completing sign in…</strong>
+    </div>
+    <div id="failure" hidden>
+      <strong class="error">Sign in failed</strong>
+      <p id="err-detail"></p>
+      <p><a href="/login">Back to sign in</a></p>
+    </div>
+  </div>
+
+  <script>
+    import { handleCallback, storeDid } from "../../lib/auth";
+    import { toMessage } from "../../lib/utils";
+
+    try {
+      const { session } = await handleCallback();
+      storeDid(session.info.sub);
+      window.location.replace("/share");
+    } catch (err) {
+      document.getElementById("pending")!.hidden = true;
+      document.getElementById("err-detail")!.textContent = toMessage(err);
+      document.getElementById("failure")!.hidden = false;
+    }
+  </script>
+</Base>
