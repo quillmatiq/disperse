@@ -20,6 +20,8 @@
   let did = $state<string | null>(null);
   let profile = $state<{ handle: string; avatar?: string } | null>(null);
   let avatarError = $state(false);
+  let menuOpen = $state(false);
+  let menuRef = $state<HTMLElement | null>(null);
 
   // Data
   let cosmikCollections = $state<CosmikCollectionRef[]>([]);
@@ -91,6 +93,12 @@
 
     refreshSession(did).catch((err) => console.warn("Session refresh failed:", err));
   });
+
+  function onWindowClick(e: MouseEvent) {
+    if (menuOpen && menuRef && !menuRef.contains(e.target as Node)) {
+      menuOpen = false;
+    }
+  }
 
   async function handleLogout() {
     if (agent) await logout(agent);
@@ -226,15 +234,33 @@
   }
 </script>
 
+<svelte:window onclick={onWindowClick} />
+
 <section id="share-screen" class="card">
   <header>
     <h1>Disperse</h1>
-    <div class="user-info">
-      {#if profile?.avatar && !avatarError}
-        <img class="avatar" src={profile.avatar} alt="" onerror={() => (avatarError = true)} />
+    <div class="menu-trigger" bind:this={menuRef}>
+      <button class="avatar-btn" onclick={() => (menuOpen = !menuOpen)} aria-label="Account menu">
+        {#if profile?.avatar && !avatarError}
+          <img class="avatar" src={profile.avatar} alt="" onerror={() => (avatarError = true)} />
+        {:else}
+          <div class="avatar-fallback"></div>
+        {/if}
+      </button>
+      {#if menuOpen}
+        <div class="dropdown">
+          <div class="dropdown-profile">
+            {#if profile?.avatar && !avatarError}
+              <img class="avatar" src={profile.avatar} alt="" onerror={() => (avatarError = true)} />
+            {:else}
+              <div class="avatar-fallback"></div>
+            {/if}
+            <span class="handle">{profile?.handle ?? ""}</span>
+          </div>
+          <hr />
+          <button class="dropdown-item" onclick={handleLogout}>Sign out</button>
+        </div>
       {/if}
-      <span class="handle">{profile?.handle ?? ""}</span>
-      <button class="btn-ghost" onclick={handleLogout}>Sign out</button>
     </div>
   </header>
 
@@ -279,18 +305,53 @@
     margin-bottom: 1.5rem;
   }
 
-  .user-info {
+  .menu-trigger {
+    position: relative;
+  }
+
+  .avatar-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
   }
 
   .avatar {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+  }
+
+  .avatar-fallback {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 180px;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .dropdown-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
   }
 
   .handle {
@@ -300,6 +361,28 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .dropdown hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  .dropdown-item:hover {
+    background: var(--hover, rgba(0, 0, 0, 0.05));
   }
 
   .char-count {
