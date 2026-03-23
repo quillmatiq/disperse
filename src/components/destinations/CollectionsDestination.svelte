@@ -5,6 +5,7 @@
   interface Collection {
     uri: string;
     name: string;
+    source: "cosmik" | "margin";
   }
 
   let {

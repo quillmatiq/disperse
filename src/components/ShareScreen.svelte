@@ -13,6 +13,7 @@
   import BskyDestination from "./destinations/BskyDestination.svelte";
   import CollectionsDestination from "./destinations/CollectionsDestination.svelte";
   import BookmarksDestination from "./destinations/BookmarksDestination.svelte";
+  import ShareResults, { type ShareResult } from "./ShareResults.svelte";
 
   // Session
   let agent = $state<OAuthUserAgent | null>(null);
@@ -41,7 +42,7 @@
   let sending = $state(false);
   let statusType = $state<"idle" | "ok" | "error">("idle");
   let statusText = $state("");
-  let results = $state<{ label: string; uri: string }[]>([]);
+  let results = $state<ShareResult[]>([]);
 
   let statusClass = $derived(
     statusType === "ok" ? "status ok" : statusType === "error" ? "status error" : "status"
@@ -129,8 +130,9 @@
       }
     }
 
-    const newResults: { label: string; uri: string }[] = [];
+    const newResults: ShareResult[] = [];
     const errors: string[] = [];
+    const handle = profile?.handle ?? (did as string); // used for Bluesky links
 
     if (destBsky) {
       try {
@@ -140,7 +142,11 @@
           linkMeta,
           thumb,
         });
-        newResults.push({ label: "Bluesky", uri });
+        const rkey = uri.split("/").pop()!;
+        newResults.push(
+          { platform: "bluesky",  href: `https://bsky.app/profile/${handle}/post/${rkey}` },
+          { platform: "blacksky", href: `https://blacksky.community/profile/${handle}/post/${rkey}` },
+        );
       } catch (err) {
         errors.push(`Bluesky: ${toMessage(err)}`);
       }
@@ -149,7 +155,10 @@
     if (trimmedUrl && destBookmarks) {
       try {
         const bookmark = await createBookmark(rpc, did, trimmedUrl, checkedTags.length > 0 ? checkedTags : undefined);
-        newResults.push({ label: "Bookmarks", uri: bookmark.uri });
+        newResults.push(
+          { platform: "kipclip", href: "https://kipclip.com" },
+          { platform: "sill",    href: "https://sill.social/bookmarks" },
+        );
         try {
           await createKipclipAnnotation(rpc, did, {
             bookmarkUri: bookmark.uri,
@@ -168,6 +177,13 @@
 
     const checkedCollections = allCollections.filter((c) => checkedCollectionUris.includes(c.uri));
     const marginColls = checkedCollections.filter((c) => c.source === "margin");
+    const cosmikColls = checkedCollections.filter(
+      (c): c is CosmikCollectionRef & { source: "cosmik" } => c.source === "cosmik"
+    );
+
+    let marginBookmarkUri: string | undefined;
+    let cosmikCardUri: string | undefined;
+
     if (trimmedUrl && marginColls.length > 0) {
       try {
         const bookmark = await createMarginBookmark(rpc, did, {
@@ -175,12 +191,12 @@
           title: linkMeta?.title,
           description: trimmedText || undefined,
         });
+        marginBookmarkUri = bookmark.uri;
         for (const coll of marginColls) {
           try {
             await linkBookmarkToCollection(rpc, did, bookmark.uri, coll.uri);
-            newResults.push({ label: `Margin → ${coll.name}`, uri: bookmark.uri });
           } catch (err) {
-            errors.push(`Margin (${coll.uri}): ${toMessage(err)}`);
+            errors.push(`Margin (${coll.name}): ${toMessage(err)}`);
           }
         }
       } catch (err) {
@@ -188,9 +204,6 @@
       }
     }
 
-    const cosmikColls = checkedCollections.filter(
-      (c): c is CosmikCollectionRef & { source: "cosmik" } => c.source === "cosmik"
-    );
     if (trimmedUrl && cosmikColls.length > 0) {
       try {
         const card = await createCosmikUrlCard(rpc, did, {
@@ -200,6 +213,7 @@
           siteName: linkMeta?.siteName,
           imageUrl: linkMeta?.image,
         });
+        cosmikCardUri = card.uri;
         if (trimmedText) {
           try {
             await createCosmikNoteCard(rpc, did, { text: trimmedText, parentCard: card });
@@ -210,9 +224,8 @@
         for (const coll of cosmikColls) {
           try {
             await linkCardToCollection(rpc, did, card, coll);
-            newResults.push({ label: `Cosmik → ${coll.name}`, uri: card.uri });
           } catch (err) {
-            errors.push(`Cosmik (${coll.uri}): ${toMessage(err)}`);
+            errors.push(`Cosmik (${coll.name}): ${toMessage(err)}`);
           }
         }
       } catch (err) {
@@ -220,11 +233,27 @@
       }
     }
 
+    if (cosmikCardUri) {
+      newResults.push({ platform: "semble", href: `https://semble.so/url?id=${encodeURIComponent(trimmedUrl)}` });
+      if (!marginBookmarkUri) {
+        // Cosmik-only: the card also appears on margin.at
+        newResults.push({ platform: "margin", href: `https://margin.at/at/${did}/${cosmikCardUri.split("/").pop()}` });
+      }
+    }
+
+    if (marginBookmarkUri) {
+      newResults.push({ platform: "margin", href: `https://margin.at/at/${did}/${marginBookmarkUri.split("/").pop()}` });
+      if (!cosmikCardUri) {
+        // Margin-only: the URL is also discoverable on semble
+        newResults.push({ platform: "semble", href: `https://semble.so/url?id=${encodeURIComponent(trimmedUrl)}` });
+      }
+    }
+
     if (errors.length > 0) {
       statusText = errors.join(" · ");
       statusType = "error";
     } else {
-      statusText = `Sent to ${newResults.length} destination${newResults.length !== 1 ? "s" : ""}.`;
+      statusText = "Sent.";
       statusType = "ok";
       text = "";
       url = "";
@@ -287,14 +316,7 @@
   </form>
 
   <div class={statusClass}>{statusText}</div>
-  <div class="result">
-    {#each results as result (result.uri)}
-      <details>
-        <summary>{result.label}</summary>
-        <code>{result.uri}</code>
-      </details>
-    {/each}
-  </div>
+  <ShareResults {results} />
 </section>
 
 <style>
