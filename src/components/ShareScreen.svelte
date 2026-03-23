@@ -15,6 +15,8 @@
   import BookmarksDestination from "./destinations/BookmarksDestination.svelte";
   import ShareResults, { type ShareResult } from "./ShareResults.svelte";
 
+  let { initialUrl = "" }: { initialUrl?: string } = $props();
+
   // Session
   let agent = $state<OAuthUserAgent | null>(null);
   let rpc = $state<Client | null>(null);
@@ -32,7 +34,7 @@
 
   // Form
   let text = $state("");
-  let url = $state("");
+  let url = $state(initialUrl);
   let destBsky = $state(false);
   let destBookmarks = $state(false);
   let checkedCollectionUris = $state<string[]>([]);

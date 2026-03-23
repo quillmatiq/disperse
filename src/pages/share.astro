@@ -1,9 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
 import ShareScreen from "../components/ShareScreen.svelte";
+
+const initialUrl = Astro.url.searchParams.get("url") ?? "";
 ---
 <Base>
   <div id="app">
-    <ShareScreen client:load />
+    <ShareScreen client:load initialUrl={initialUrl} />
   </div>
 </Base>
