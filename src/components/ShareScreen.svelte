@@ -14,6 +14,7 @@
   import CollectionsDestination from "./destinations/CollectionsDestination.svelte";
   import BookmarksDestination from "./destinations/BookmarksDestination.svelte";
   import ShareResults, { type ShareResult } from "./ShareResults.svelte";
+  import LinkPreview from "./LinkPreview.svelte";
 
   let { initialUrl = "" }: { initialUrl?: string } = $props();
 
@@ -39,6 +40,27 @@
   let destBookmarks = $state(false);
   let checkedCollectionUris = $state<string[]>([]);
   let checkedTags = $state<string[]>([]);
+
+  // Link preview
+  let linkMeta = $state<LinkMeta | undefined>(undefined);
+  let linkMetaLoading = $state(false);
+
+  $effect(() => {
+    const trimmed = url.trim();
+    linkMeta = undefined;
+    linkMetaLoading = false;
+    if (!trimmed) return;
+    linkMetaLoading = true;
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/link-meta?url=${encodeURIComponent(trimmed)}`, { signal: controller.signal });
+        if (res.ok) linkMeta = await res.json();
+      } catch { /* ignore */ }
+      linkMetaLoading = false;
+    }, 600);
+    return () => { clearTimeout(timer); controller.abort(); };
+  });
 
   // UI
   let sending = $state(false);
@@ -119,13 +141,14 @@
     const trimmedUrl = url.trim();
     const trimmedText = text.trim();
 
-    let linkMeta: LinkMeta | undefined;
     let thumb: Awaited<ReturnType<typeof uploadImageBlob>> = undefined;
     if (trimmedUrl) {
-      try {
-        const metaRes = await fetch(`/api/link-meta?url=${encodeURIComponent(trimmedUrl)}`);
-        if (metaRes.ok) linkMeta = await metaRes.json();
-      } catch { /* skip metadata on failure */ }
+      if (!linkMeta) {
+        try {
+          const metaRes = await fetch(`/api/link-meta?url=${encodeURIComponent(trimmedUrl)}`);
+          if (metaRes.ok) linkMeta = await metaRes.json();
+        } catch { /* skip metadata on failure */ }
+      }
       if (linkMeta?.image) {
         const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(linkMeta.image)}`;
         thumb = await uploadImageBlob(rpc, proxyUrl);
@@ -305,6 +328,7 @@
     <div class="field">
       <label for="post-url">Link</label>
       <input id="post-url" type="url" placeholder="https://…" bind:value={url} />
+      <LinkPreview {url} meta={linkMeta} loading={linkMetaLoading} />
     </div>
 
     <span class="dest-label">Share to</span>
