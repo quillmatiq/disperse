@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Disperse",
+  "version": "0.1.0",
+  "description": "Share links to multiple ATProto destinations",
+  "permissions": ["activeTab"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Share with Disperse"
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}
