@@ -1,6 +1,7 @@
 <script lang="ts">
   import sembleLogo from "../../assets/semble-logo.png?url";
   import marginLogo from "../../assets/margin-logo.png?url";
+  import rabbitholeLogo from "../../assets/rabbithole-logo.png?url";
 
   interface Collection {
     uri: string;
@@ -32,6 +33,7 @@
   <span class="dest-name">Collections</span>
   <img class="dest-icon" src={sembleLogo} alt="Semble" title="semble.so" />
   <img class="dest-icon" src={marginLogo} alt="Margin" title="margin.at" />
+  <img class="dest-icon" src={rabbitholeLogo} alt="Rabbithole" title="rabbithole.land" />
   <svg class="dest-chevron" class:open width="12" height="8" viewBox="0 0 12 8" fill="none">
     <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>

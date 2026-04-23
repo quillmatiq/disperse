@@ -1,6 +1,7 @@
 <script lang="ts">
   import kipclipLogo from "../../assets/kipclip-logo.png?url";
   import sillLogo from "../../assets/sill-logo.png?url";
+   import marginLogo from "../../assets/margin-logo.png?url";
 
   let {
     tags,
@@ -25,6 +26,7 @@
   <span class="dest-name">Bookmarks</span>
   <img class="dest-icon" src={kipclipLogo} alt="Kipclip" title="kipclip.com" />
   <img class="dest-icon" src={sillLogo} alt="Sill" title="sill.social" />
+  <img class="dest-icon" src={marginLogo} alt="Margin" title="margin.at" />
   <input type="checkbox" bind:checked onchange={onCheckedChange} />
 </label>
 <div class="accordion" class:open={checked}>

@@ -108,6 +108,7 @@ textarea { resize: vertical; }
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.15s, border-color 0.15s;
+  margin-left: 0.1em;
 }
 .dest-row input[type="checkbox"]:checked {
   background: var(--accent);
@@ -132,7 +133,7 @@ textarea { resize: vertical; }
 
 .dest-chevron {
   color: var(--muted);
-  margin-left: auto;
+  margin-left: 0.5em;
   transition: transform 0.2s;
 }
 .dest-chevron.open { transform: rotate(180deg); }
