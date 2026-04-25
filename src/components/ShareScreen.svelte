@@ -10,6 +10,8 @@
   import type { OAuthUserAgent } from "@atcute/oauth-browser-client";
   import type { Client } from "@atcute/client";
 
+  import disperseLogo from "../assets/disperse-logo.svg?url";
+
   import BskyDestination from "./destinations/BskyDestination.svelte";
   import CollectionsDestination from "./destinations/CollectionsDestination.svelte";
   import BookmarksDestination from "./destinations/BookmarksDestination.svelte";
@@ -296,7 +298,10 @@
 
 <section id="share-screen" class="card">
   <header>
-    <h1>Disperse</h1>
+    <div class="brand">
+      <img src={disperseLogo} alt="" class="brand-logo" />
+      <h1>Disperse</h1>
+    </div>
     <div class="menu-trigger" bind:this={menuRef}>
       <button class="avatar-btn" onclick={() => (menuOpen = !menuOpen)} aria-label="Account menu">
         {#if profile?.avatar && !avatarError}
@@ -355,6 +360,17 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.5rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .brand-logo {
+    width: 28px;
+    height: 28px;
   }
 
   .menu-trigger {

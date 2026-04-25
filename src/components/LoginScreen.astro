@@ -1,3 +1,6 @@
+---
+import disperseLogo from '../assets/disperse-logo.svg?url';
+---
 <script src="../scripts/login.ts"></script>
 <script>
   const suffixes = ['.bsky.social', '.blacksky.app', '.eurosky.social', '.pckt.cafe', '.com', '.tngl.sh', '.myatproto.social', '.margin.cafe', '.selfhosted.social', '.npmx.social'];
@@ -31,11 +34,11 @@
   }, 1000);
 </script>
 <section id="login-screen" class="card">
-  <h1>Disperse</h1>
-  <p class="subtitle">Share links across the Atmosphere</p>
+  <img src={disperseLogo} alt="Disperse logo" class="login-logo" />
+  <center><h1 class="login-header">Disperse</h1></center>
+  <center><p class="subtitle">Share links across the Atmosphere</p></center>
   <form id="login-form">
     <div class="field">
-      <label for="handle">Connect to the Atmosphere</label>
       <div class="input-placeholder-wrapper">
         <input id="handle" type="text" autocomplete="username" required />
         <span class="placeholder-display" aria-hidden="true">
@@ -43,7 +46,21 @@
         </span>
       </div>
     </div>
-    <button type="submit">Connect</button>
+    <center><button type="submit">Connect to the Atmosphere</button></center>
   </form>
   <div id="login-status" class="status"></div>
 </section>
+
+<style>
+  .login-header {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-logo {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 0.75rem;
+  }
+</style>
