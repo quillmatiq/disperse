@@ -30,7 +30,7 @@
   <input type="checkbox" bind:checked onchange={onCheckedChange} />
 </label>
 <div class="accordion" class:open={checked}>
-  {#if checked}
+  <div class="accordion-inner">
     {#if tags.length === 0}
       <div class="accordion-msg">No tags found.</div>
     {:else}
@@ -41,5 +41,5 @@
         </label>
       {/each}
     {/if}
-  {/if}
+  </div>
 </div>

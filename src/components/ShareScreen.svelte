@@ -449,12 +449,10 @@
 
   .dest-label {
     display: block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    font-weight: 500;
     color: var(--muted);
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.4rem;
   }
 
 </style>

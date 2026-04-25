@@ -39,16 +39,18 @@
   </svg>
 </div>
 <div class="accordion" class:open>
-  {#if loaded}
-    {#if collections.length === 0}
-      <div class="accordion-msg">No collections found.</div>
-    {:else}
-      {#each collections as collection (collection.uri)}
-        <label class="accordion-item">
-          <span class="item-name">{collection.name}</span>
-          <input type="checkbox" bind:group={checkedUris} value={collection.uri} />
-        </label>
-      {/each}
+  <div class="accordion-inner">
+    {#if loaded}
+      {#if collections.length === 0}
+        <div class="accordion-msg">No collections found.</div>
+      {:else}
+        {#each collections as collection (collection.uri)}
+          <label class="accordion-item">
+            <span class="item-name">{collection.name}</span>
+            <input type="checkbox" bind:group={checkedUris} value={collection.uri} />
+          </label>
+        {/each}
+      {/if}
     {/if}
-  {/if}
+  </div>
 </div>
