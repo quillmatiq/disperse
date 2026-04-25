@@ -3,6 +3,8 @@ import disperseLogo from '../assets/disperse-logo.svg?url';
 ---
 <script src="../scripts/login.ts"></script>
 <script>
+  import "actor-typeahead";
+
   const suffixes = ['.bsky.social', '.blacksky.app', '.eurosky.social', '.pckt.cafe', '.com', '.tngl.sh', '.myatproto.social', '.margin.cafe', '.selfhosted.social', '.npmx.social'];
   let remaining: string[] = [];
   let current = suffixes[0];
@@ -40,7 +42,9 @@ import disperseLogo from '../assets/disperse-logo.svg?url';
   <form id="login-form">
     <div class="field">
       <div class="input-placeholder-wrapper">
-        <input id="handle" type="text" autocomplete="username" required />
+        <actor-typeahead>
+          <input id="handle" type="text" autocomplete="off" required />
+        </actor-typeahead>
         <span class="placeholder-display" aria-hidden="true">
           you<span id="rotating-suffix">.bsky.social</span>
         </span>
