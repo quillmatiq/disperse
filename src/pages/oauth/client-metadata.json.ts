@@ -18,6 +18,7 @@ export const GET: APIRoute = ({ url, request }) => {
     client_id: `${origin}/oauth/client-metadata.json`,
     client_name: "Disperse",
     client_uri: origin,
+    logo_uri: `${origin}/disperse-logo.svg`,
     redirect_uris: [`${origin}/oauth/callback`],
     scope: OAUTH_SCOPE,
     grant_types: ["authorization_code", "refresh_token"],
