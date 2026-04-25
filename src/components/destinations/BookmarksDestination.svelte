@@ -1,7 +1,7 @@
 <script lang="ts">
   import kipclipLogo from "../../assets/kipclip-logo.png?url";
   import sillLogo from "../../assets/sill-logo.png?url";
-   import marginLogo from "../../assets/margin-logo.png?url";
+  import marginLogo from "../../assets/margin-logo.png?url";
 
   let {
     tags,
