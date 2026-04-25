@@ -39,12 +39,15 @@ export async function fetchReadingListTag(
   rpc: Client,
   did: string,
 ): Promise<string> {
-  const res = await rpc.get("com.atproto.repo.getRecord", {
-    params: { repo: did as Repo, collection: "com.kipclip.preferences", rkey: "self" },
-  });
-  if (!res.ok) return READING_LIST_TAG_DEFAULT;
-  const prefs = res.data.value as unknown as KipclipPreferences;
-  return prefs.readingListTag ?? READING_LIST_TAG_DEFAULT;
+  try {
+    const res = await rpc.get("com.atproto.repo.getRecord", {
+      params: { repo: did as Repo, collection: "com.kipclip.preferences", rkey: "self" },
+    });
+    const prefs = res.data.value as unknown as KipclipPreferences;
+    return prefs.readingListTag ?? READING_LIST_TAG_DEFAULT;
+  } catch {
+    return READING_LIST_TAG_DEFAULT;
+  }
 }
 
 export interface KipclipAnnotationOptions {
@@ -54,7 +57,6 @@ export interface KipclipAnnotationOptions {
   image?: string;
   note?: string;
 }
-
 
 export async function fetchKipclipTags(
   rpc: Client,

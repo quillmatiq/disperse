@@ -15,6 +15,8 @@ import {
 } from "@atcute/identity-resolver";
 import { Client } from "@atcute/client";
 
+import { OAUTH_SCOPE } from "./constants";
+
 let oauthConfigured = false;
 
 function ensureOAuthConfigured(): void {
@@ -43,7 +45,7 @@ export async function login(handle: string): Promise<void> {
   ensureOAuthConfigured();
   const url = await createAuthorizationUrl({
     target: { type: "account", identifier: handle as `${string}.${string}` },
-    scope: "atproto transition:generic",
+    scope: OAUTH_SCOPE,
   });
   // Small delay to let the browser store PKCE state before navigating
   await new Promise((r) => setTimeout(r, 200));

@@ -104,7 +104,7 @@
     did = active.session.info.sub;
 
     const [prof, cosmik, margin, tags, rlt] = await Promise.all([
-      fetchProfile(active.rpc, did),
+      fetchProfile(active.rpc, did, active.session.info.aud),
       fetchCosmikCollections(active.rpc, did).catch(() => [] as CosmikCollectionRef[]),
       fetchMarginCollections(active.rpc, did).catch(() => [] as MarginCollectionRef[]),
       fetchKipclipTags(active.rpc, did).catch(() => [] as KipclipTagRef[]),

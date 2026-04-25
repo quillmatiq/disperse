@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { OAUTH_SCOPE } from "../../lib/constants";
 
 export const GET: APIRoute = ({ url, request }) => {
   // When behind a reverse proxy (ngrok, etc.), reconstruct the real public origin
@@ -18,7 +19,7 @@ export const GET: APIRoute = ({ url, request }) => {
     client_name: "Disperse",
     client_uri: origin,
     redirect_uris: [`${origin}/oauth/callback`],
-    scope: "atproto transition:generic",
+    scope: OAUTH_SCOPE,
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
     token_endpoint_auth_method: "none",

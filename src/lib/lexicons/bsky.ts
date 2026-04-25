@@ -8,14 +8,24 @@ export interface UserProfile {
   avatar?: string;
 }
 
-export async function fetchProfile(rpc: Client, did: string): Promise<UserProfile> {
+export async function fetchProfile(rpc: Client, did: string, pdsUrl: string): Promise<UserProfile> {
   try {
-    const res = await rpc.get("app.bsky.actor.getProfile", {
-      params: { actor: did as `did:${string}:${string}` },
-    });
-    if (!res.ok) return { handle: did };
-    const data = res.data as { handle: string; avatar?: string };
-    return { handle: data.handle, avatar: data.avatar };
+    const [describeRes, profileRes] = await Promise.all([
+      rpc.get("com.atproto.repo.describeRepo", { params: { repo: did as Repo } }),
+      rpc.get("com.atproto.repo.getRecord", {
+        params: { repo: did as Repo, collection: "app.bsky.actor.profile" as Nsid, rkey: "self" },
+      }).catch(() => null),
+    ]);
+    const handle = (describeRes.data as { handle: string }).handle;
+    const profile = profileRes
+      ? (profileRes.data as { value: { avatar?: { ref: { $link: string } } } }).value
+      : undefined;
+    const cid = profile?.avatar?.ref.$link;
+    const base = pdsUrl.replace(/\/$/, "");
+    const avatar = cid
+      ? `${base}/xrpc/com.atproto.sync.getBlob?did=${encodeURIComponent(did)}&cid=${encodeURIComponent(cid)}`
+      : undefined;
+    return { handle, avatar };
   } catch {
     return { handle: did };
   }
