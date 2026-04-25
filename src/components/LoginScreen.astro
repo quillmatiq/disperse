@@ -1,13 +1,49 @@
 <script src="../scripts/login.ts"></script>
+<script>
+  const suffixes = ['.bsky.social', '.blacksky.app', '.eurosky.social', '.pckt.cafe', '.com', '.tngl.sh', '.myatproto.social', '.margin.cafe', '.selfhosted.social', '.npmx.social'];
+  let remaining: string[] = [];
+  let current = suffixes[0];
+
+  function nextSuffix() {
+    if (remaining.length === 0) remaining = suffixes.filter(s => s !== current).sort(() => Math.random() - 0.5);
+    return remaining.pop()!;
+  }
+
+  const el = document.getElementById('rotating-suffix')!;
+  const placeholder = document.querySelector('.placeholder-display') as HTMLElement;
+  const input = document.getElementById('handle') as HTMLInputElement;
+
+  function updatePlaceholder() {
+    placeholder.classList.toggle('hidden', input.value.length > 0 || document.activeElement === input);
+  }
+
+  input.addEventListener('input', updatePlaceholder);
+  input.addEventListener('focus', updatePlaceholder);
+  input.addEventListener('blur', updatePlaceholder);
+
+  setInterval(() => {
+    el.classList.add('fade-out');
+    setTimeout(() => {
+      current = nextSuffix();
+      el.textContent = current;
+      el.classList.remove('fade-out');
+    }, 250);
+  }, 1000);
+</script>
 <section id="login-screen" class="card">
   <h1>Disperse</h1>
   <p class="subtitle">Share links across the Atmosphere</p>
   <form id="login-form">
     <div class="field">
-      <label for="handle">Your Atmosphere handle</label>
-      <input id="handle" type="text" placeholder="you.bsky.social" autocomplete="username" required />
+      <label for="handle">Connect to the Atmosphere</label>
+      <div class="input-placeholder-wrapper">
+        <input id="handle" type="text" autocomplete="username" required />
+        <span class="placeholder-display" aria-hidden="true">
+          you<span id="rotating-suffix">.bsky.social</span>
+        </span>
+      </div>
     </div>
-    <button type="submit">Sign in with ATProto</button>
+    <button type="submit">Connect</button>
   </form>
   <div id="login-status" class="status"></div>
 </section>

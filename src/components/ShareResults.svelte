@@ -5,21 +5,24 @@
   import marginLogo from "../assets/margin-logo.png?url";
   import kipclipLogo from "../assets/kipclip-logo.png?url";
   import sillLogo from "../assets/sill-logo.png?url";
+  import rabbitholeLogo from "../assets/rabbithole-logo.png?url";
 
-  export type Platform = "bluesky" | "blacksky" | "semble" | "margin" | "kipclip" | "sill";
+  export type Platform = "bluesky" | "blacksky" | "semble" | "margin" | "kipclip" | "sill" | "rabbithole";
 
   export interface ShareResult {
     platform: Platform;
     href: string;
+    label?: string;
   }
 
-  const PLATFORM_META: Record<Platform, { logo: string; name: string }> = {
-    bluesky:  { logo: blueskyLogo,  name: "Bluesky" },
-    blacksky: { logo: blackskyLogo, name: "Blacksky" },
-    semble:   { logo: sembleLogo,   name: "Semble" },
-    margin:   { logo: marginLogo,   name: "Margin" },
-    kipclip:  { logo: kipclipLogo,  name: "Kipclip" },
-    sill:     { logo: sillLogo,     name: "Sill" },
+  const PLATFORM_META: Record<Platform, { logo: string; name: string; verb: string }> = {
+    bluesky:    { logo: blueskyLogo,    name: "Bluesky",    verb: "Shared to" },
+    blacksky:   { logo: blackskyLogo,   name: "Blacksky",   verb: "Shared to" },
+    semble:     { logo: sembleLogo,     name: "Semble",     verb: "Saved to" },
+    margin:     { logo: marginLogo,     name: "Margin",     verb: "Saved to" },
+    kipclip:    { logo: kipclipLogo,    name: "Kipclip",    verb: "Bookmarked on" },
+    sill:       { logo: sillLogo,       name: "Sill",       verb: "Bookmarked on" },
+    rabbithole: { logo: rabbitholeLogo, name: "Rabbithole", verb: "Saved to" },
   };
 
   let { results }: { results: ShareResult[] } = $props();
@@ -31,7 +34,7 @@
       {@const meta = PLATFORM_META[result.platform]}
       <a href={result.href} target="_blank" rel="noopener noreferrer" class="result-link">
         <img src={meta.logo} alt="" class="result-logo" />
-        Sent to {meta.name}
+        {result.label ?? `${meta.verb} ${meta.name}`}
       </a>
     {/each}
   </div>

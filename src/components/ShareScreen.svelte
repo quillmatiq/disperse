@@ -183,6 +183,7 @@
         newResults.push(
           { platform: "kipclip", href: "https://kipclip.com" },
           { platform: "sill",    href: "https://sill.social/bookmarks" },
+          { platform: "margin",  href: `https://margin.at/at/${did}/${bookmark.uri.split("/").pop()}`, label: "Bookmarked on Margin" },
         );
         try {
           await createKipclipAnnotation(rpc, did, {
@@ -259,7 +260,10 @@
     }
 
     if (cosmikCardUri) {
-      newResults.push({ platform: "semble", href: `https://semble.so/url?id=${encodeURIComponent(trimmedUrl)}` });
+      newResults.push(
+        { platform: "semble",     href: `https://semble.so/url?id=${encodeURIComponent(trimmedUrl)}` },
+        { platform: "rabbithole", href: `https://rabbithole.land` },
+      );
       if (!marginBookmarkUri) {
         // Cosmik-only: the card also appears on margin.at
         newResults.push({ platform: "margin", href: `https://margin.at/at/${did}/${cosmikCardUri.split("/").pop()}` });

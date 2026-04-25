@@ -72,6 +72,28 @@ input:focus, textarea:focus {
   background: var(--surface3);
 }
 input::placeholder, textarea::placeholder { color: var(--muted); }
+
+.input-placeholder-wrapper { position: relative; }
+.input-placeholder-wrapper input { width: 100%; }
+.placeholder-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  pointer-events: none;
+  user-select: none;
+}
+.placeholder-display.hidden { display: none; }
+#rotating-suffix {
+  display: inline-block;
+  overflow: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#rotating-suffix.fade-out { opacity: 0; transform: translateY(-4px); }
+#rotating-suffix.fade-in { opacity: 1; transform: translateY(0); }
 textarea { resize: vertical; }
 
 /* Destination rows — shared between all lexicon destinations */
