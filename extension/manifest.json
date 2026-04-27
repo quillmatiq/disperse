@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Disperse",
   "version": "0.1.0",
-  "description": "Share links to multiple ATProto destinations",
+  "description": "Share links to multiple destinations in the Atmosphere",
   "permissions": ["activeTab"],
   "background": {
     "service_worker": "background.js",
