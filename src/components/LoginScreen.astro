@@ -1,5 +1,6 @@
 ---
 import disperseLogo from '../assets/disperse-logo.svg?url';
+import Bookmarklet from './Bookmarklet.svelte';
 ---
 <script src="../scripts/login.ts"></script>
 <script>
@@ -55,6 +56,8 @@ import disperseLogo from '../assets/disperse-logo.svg?url';
   <div id="login-status" class="status"></div>
 </section>
 
+<Bookmarklet />
+
 <style>
   .login-header {
     font-size: 2rem;
@@ -67,4 +70,5 @@ import disperseLogo from '../assets/disperse-logo.svg?url';
     height: 48px;
     margin: 0 auto 0.75rem;
   }
+
 </style>

@@ -11,6 +11,7 @@
   import type { Client } from "@atcute/client";
 
   import disperseLogo from "../assets/disperse-logo.svg?url";
+  import Bookmarklet from "./Bookmarklet.svelte";
 
   import BskyDestination from "./destinations/BskyDestination.svelte";
   import CollectionsDestination from "./destinations/CollectionsDestination.svelte";
@@ -19,6 +20,7 @@
   import LinkPreview from "./LinkPreview.svelte";
 
   let { initialUrl = "" }: { initialUrl?: string } = $props();
+
 
   // Session
   let agent = $state<OAuthUserAgent | null>(null);
@@ -354,6 +356,8 @@
   <ShareResults {results} />
 </section>
 
+<Bookmarklet />
+
 <style>
   header {
     display: flex;
@@ -470,5 +474,6 @@
     color: var(--muted);
     margin-bottom: 0.4rem;
   }
+
 
 </style>
