@@ -12,6 +12,11 @@ const { title = "Disperse" } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  <meta property="og:title" content={title} />
+  <meta property="og:image" content="/disperse-hero.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="/disperse-hero.png" />
   <slot name="head" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
 </head>
