@@ -100,6 +100,7 @@
   onMount(async () => {
     const active = await getActiveSession();
     if (!active) {
+      if (initialUrl) sessionStorage.setItem("pendingUrl", initialUrl);
       window.location.replace("/login");
       return;
     }

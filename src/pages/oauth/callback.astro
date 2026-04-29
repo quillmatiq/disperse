@@ -27,7 +27,10 @@ import Base from "../../layouts/Base.astro";
     try {
       const { session } = await handleCallback();
       storeDid(session.info.sub);
-      window.location.replace("/share");
+      const pendingUrl = sessionStorage.getItem("pendingUrl");
+      sessionStorage.removeItem("pendingUrl");
+      const dest = pendingUrl ? `/share?url=${encodeURIComponent(pendingUrl)}` : "/share";
+      window.location.replace(dest);
     } catch (err) {
       document.getElementById("pending")!.hidden = true;
       document.getElementById("err-detail")!.textContent = toMessage(err);
