@@ -11,7 +11,7 @@
   import type { Client } from "@atcute/client";
 
   import disperseLogo from "../assets/disperse-logo.svg?url";
-  import Bookmarklet from "./Bookmarklet.svelte";
+  import Footer from "./Footer.svelte";
 
   import BskyDestination from "./destinations/BskyDestination.svelte";
   import CollectionsDestination from "./destinations/CollectionsDestination.svelte";
@@ -357,7 +357,7 @@
   <ShareResults {results} />
 </section>
 
-<Bookmarklet />
+<Footer />
 
 <style>
   header {

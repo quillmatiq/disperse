@@ -1,6 +1,6 @@
 ---
 import disperseLogo from '../assets/disperse-logo.svg?url';
-import Bookmarklet from './Bookmarklet.svelte';
+import Footer from './Footer.svelte';
 ---
 <script src="../scripts/login.ts"></script>
 <script>
@@ -56,7 +56,7 @@ import Bookmarklet from './Bookmarklet.svelte';
   <div id="login-status" class="status"></div>
 </section>
 
-<Bookmarklet />
+<Footer client:load />
 
 <style>
   .login-header {
