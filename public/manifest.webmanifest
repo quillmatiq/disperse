@@ -1,0 +1,38 @@
+{
+  "name": "Disperse",
+  "short_name": "Disperse",
+  "description": "Share links to multiple destinations in the Atmosphere",
+  "start_url": "/share",
+  "display": "standalone",
+  "background_color": "#F6F3F0",
+  "theme_color": "#F6F3F0",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/disperse-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
