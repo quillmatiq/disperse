@@ -63,6 +63,11 @@ input[type="text"], input[type="url"], textarea {
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }
+@media (hover: none) and (pointer: coarse) {
+  input[type="text"], input[type="url"], textarea { font-size: 1rem; }
+  .placeholder-display { font-size: 1rem; }
+}
+
 input:focus, textarea:focus {
   border-color: var(--accent);
   background: var(--surface);
