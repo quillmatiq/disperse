@@ -30,9 +30,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # wrangler local state
 .wrangler
 
-# astro local state
-.astro
-
 # IntelliJ based IDEs
 .idea
 

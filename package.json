@@ -8,14 +8,14 @@
     "preview": "wrangler pages dev ./dist"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.3.1",
-    "@astrojs/svelte": "^8.1.0",
+    "@astrojs/cloudflare": "^13.1.2",
+    "@astrojs/svelte": "^8.0.3",
     "@atcute/bluesky": "^3.2.20",
     "@atcute/client": "^4.2.1",
     "@atcute/identity-resolver": "^1.2.2",
     "@atcute/oauth-browser-client": "^3.0.0",
     "actor-typeahead": "^0.1.2",
-    "astro": "^6.2.2",
+    "astro": "^6.0.7",
     "svelte": "^5.54.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.75.0"
