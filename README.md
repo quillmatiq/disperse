@@ -6,6 +6,7 @@ You can [try it here](https://disperse.social) or you can learn more about it on
 ## Credits:
 * [@mary-my-id/atcute](https://tangled.org/mary.my.id/atcute)
 * [@jakelazaroff.com/actor-typeahead](https://tangled.org/jakelazaroff.com/actor-typeahead)
+* [Theme icons from Iconoir](https://iconoir.com/)
 
 ## Run locally
 To install dependencies:

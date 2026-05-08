@@ -12,6 +12,7 @@
 
   import disperseLogo from "../assets/disperse-logo.svg?url";
   import Footer from "./Footer.svelte";
+  import ThemePicker from "./ThemePicker.svelte";
 
   import BskyDestination from "./destinations/BskyDestination.svelte";
   import CollectionsDestination from "./destinations/CollectionsDestination.svelte";
@@ -325,6 +326,10 @@
           </div>
           <hr />
           <button class="dropdown-item" onclick={handleLogout}>Sign out</button>
+          <hr />
+          <div class="dropdown-appearance">
+            <ThemePicker />
+          </div>
         </div>
       {/if}
     </div>
@@ -412,7 +417,7 @@
     right: 0;
     top: calc(100% + 8px);
     min-width: 180px;
-    background: var(--card-bg, #fff);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -455,7 +460,14 @@
   }
 
   .dropdown-item:hover {
-    background: var(--hover, rgba(0, 0, 0, 0.05));
+    background: var(--surface2);
+  }
+
+  .dropdown-appearance {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
   }
 
   .char-count {

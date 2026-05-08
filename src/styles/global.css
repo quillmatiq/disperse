@@ -18,6 +18,30 @@
   --radius-sm: 6px;
 }
 
+[data-theme="dark"] {
+  --bg: oklch(14% 0.006 260);
+  --surface: oklch(18% 0.006 260);
+  --surface2: oklch(21% 0.006 260);
+  --surface3: oklch(25% 0.006 260);
+  --border: oklch(32% 0.006 260);
+  --text: oklch(84% 0.006 75);
+  --muted: oklch(58% 0.007 280);
+  --accent: oklch(68% 0.01 75);
+  --accent-hover: oklch(75% 0.01 75);
+  --error: oklch(65% 0.18 25);
+  --ok: oklch(65% 0.14 155);
+}
+
+[data-theme="dark"] button[type="submit"] {
+  color: oklch(14% 0.006 260);
+}
+
+[data-theme="dark"] .brand-logo,
+[data-theme="dark"] .login-logo,
+[data-theme="dark"] .dest-icon {
+  filter: invert(0.68) sepia(0.15);
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -63,6 +87,14 @@ input[type="text"], input[type="url"], textarea {
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }
+actor-typeahead {
+  --color-background: var(--surface);
+  --color-border: var(--border);
+  --color-shadow: oklch(0% 0 0);
+  --color-hover: var(--surface2);
+  --color-avatar-fallback: var(--surface3);
+}
+
 @media (hover: none) and (pointer: coarse) {
   input[type="text"], input[type="url"], textarea { font-size: 1rem; }
   .placeholder-display { font-size: 1rem; }

@@ -1,6 +1,7 @@
 ---
 import disperseLogo from '../assets/disperse-logo.svg?url';
 import Footer from './Footer.svelte';
+import ThemePicker from './ThemePicker.svelte';
 ---
 <script src="../scripts/login.ts"></script>
 <script>
@@ -36,6 +37,9 @@ import Footer from './Footer.svelte';
     }, 250);
   }, 1000);
 </script>
+<div class="login-theme-wrap">
+  <ThemePicker client:load />
+</div>
 <section id="login-screen" class="card">
   <img src={disperseLogo} alt="Disperse logo" class="login-logo" />
   <center><h1 class="login-header">Disperse</h1></center>
@@ -71,4 +75,10 @@ import Footer from './Footer.svelte';
     margin: 0 auto 0.75rem;
   }
 
+  .login-theme-wrap {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 10;
+  }
 </style>

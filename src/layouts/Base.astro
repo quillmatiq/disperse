@@ -9,6 +9,13 @@ const { title = "Disperse" } = Astro.props;
 ---
 <html lang="en">
 <head>
+  <script is:inline>
+    (function() {
+      const stored = localStorage.getItem("theme");
+      const sys = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = (stored && stored !== "system") ? stored : sys;
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
@@ -20,7 +27,8 @@ const { title = "Disperse" } = Astro.props;
   <slot name="head" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <meta name="theme-color" content="#F6F3F0" />
+  <meta name="theme-color" content="#F6F3F0" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1a1920" media="(prefers-color-scheme: dark)" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="apple-touch-icon" href="/disperse-logo.svg" />
