@@ -2,6 +2,8 @@
   import kipclipLogo from "../../assets/kipclip-logo.png?url";
   import sillLogo from "../../assets/sill-logo.png?url";
   import marginLogo from "../../assets/margin-logo.png?url";
+  import AccordionFilter from "../AccordionFilter.svelte";
+  import { ACCORDION_FILTER_THRESHOLD } from "../../lib/constants";
 
   let {
     tags,
@@ -13,12 +15,19 @@
     checkedTags: string[];
   } = $props();
 
-  function onTagChange() {
-    if (checkedTags.length > 0) checked = true;
-  }
+  let filter = $state("");
+
+  const filteredTags = $derived(
+    filter
+      ? tags.filter((t) => t.toLowerCase().includes(filter.toLowerCase()))
+      : tags
+  );
 
   function onCheckedChange() {
-    if (!checked) checkedTags = [];
+    if (!checked) {
+      checkedTags = [];
+      filter = "";
+    }
   }
 </script>
 
@@ -34,12 +43,32 @@
     {#if tags.length === 0}
       <div class="accordion-msg">No tags found.</div>
     {:else}
-      {#each tags as tag (tag)}
-        <label class="accordion-item">
-          <span class="item-name">{tag}</span>
-          <input type="checkbox" bind:group={checkedTags} value={tag} onchange={onTagChange} />
-        </label>
-      {/each}
+      {#if tags.length >= ACCORDION_FILTER_THRESHOLD}
+        <AccordionFilter bind:value={filter} />
+      {/if}
+      <div class="accordion-scroll">
+        {#if filteredTags.length === 0}
+          <div class="accordion-msg">No matches.</div>
+        {:else}
+          {#each filteredTags as tag (tag)}
+            <label class="accordion-item">
+              <span class="item-name">{tag}</span>
+              <input
+                type="checkbox"
+                checked={checkedTags.includes(tag)}
+                onchange={() => {
+                  if (checkedTags.includes(tag)) {
+                    checkedTags = checkedTags.filter((t) => t !== tag);
+                  } else {
+                    checkedTags = [...checkedTags, tag];
+                    checked = true;
+                  }
+                }}
+              />
+            </label>
+          {/each}
+        {/if}
+      </div>
     {/if}
   </div>
 </div>

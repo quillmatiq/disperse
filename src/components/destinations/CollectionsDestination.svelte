@@ -2,6 +2,8 @@
   import sembleLogo from "../../assets/semble-logo.png?url";
   import marginLogo from "../../assets/margin-logo.png?url";
   import rabbitholeLogo from "../../assets/rabbithole-logo.png?url";
+  import AccordionFilter from "../AccordionFilter.svelte";
+  import { ACCORDION_FILTER_THRESHOLD } from "../../lib/constants";
 
   interface Collection {
     uri: string;
@@ -19,10 +21,18 @@
 
   let open = $state(false);
   let loaded = $state(false);
+  let filter = $state("");
+
+  const filtered = $derived(
+    filter
+      ? collections.filter((c) => c.name.toLowerCase().includes(filter.toLowerCase()))
+      : collections
+  );
 
   function toggle() {
     open = !open;
     if (open) loaded = true;
+    else filter = "";
   }
 </script>
 
@@ -44,12 +54,31 @@
       {#if collections.length === 0}
         <div class="accordion-msg">No collections found.</div>
       {:else}
-        {#each collections as collection (collection.uri)}
-          <label class="accordion-item">
-            <span class="item-name">{collection.name}</span>
-            <input type="checkbox" bind:group={checkedUris} value={collection.uri} />
-          </label>
-        {/each}
+        {#if collections.length >= ACCORDION_FILTER_THRESHOLD}
+          <AccordionFilter bind:value={filter} />
+        {/if}
+        <div class="accordion-scroll">
+          {#if filtered.length === 0}
+            <div class="accordion-msg">No matches.</div>
+          {:else}
+            {#each filtered as collection (collection.uri)}
+              <label class="accordion-item">
+                <span class="item-name">{collection.name}</span>
+                <input
+                  type="checkbox"
+                  checked={checkedUris.includes(collection.uri)}
+                  onchange={() => {
+                    if (checkedUris.includes(collection.uri)) {
+                      checkedUris = checkedUris.filter((u) => u !== collection.uri);
+                    } else {
+                      checkedUris = [...checkedUris, collection.uri];
+                    }
+                  }}
+                />
+              </label>
+            {/each}
+          {/if}
+        </div>
       {/if}
     {/if}
   </div>
